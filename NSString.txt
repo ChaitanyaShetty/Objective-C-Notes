@@ -1,0 +1,97 @@
+NSString
+
+* Introduction
+
+-> The NSString class is the basic tool for representing text in an Objective-C appplication.
+-> NSString provides many powerful methods for searching and manipulating its contents. It also comes with native Unicode support.
+-> NSString is a immutable type, so cannot change it after it is been instantiated.
+-> NSMutableString objects provide methods to modify the underlying array of characters. while NSString does not.
+
+
+* Creating Strings
+
+-> To create strings is using the literal @"Some String"
+-> stringWithFormat class method is also useful for generating strings that are composed of variable values.
+Example: 
+NSString *make = @"Honda";
+int year = 1968;
+NSString *message = [NSString stringWithFormat:@"That is a %@ from %d!", make, year);
+NSLog(@"%@", message);
+->NSString provides built-in support for Unicode, which means that you can include UTF-8 characters directly in string literals.
+
+
+* Enumerating Strings
+
+->The two most basic NSString methods are length and characterAtIndex.
+->It return the number of character in the string and the character at a given index.
+Example:
+NSString *make = @"Porsche";
+for (int i=0; i<[make length]; i++) {
+unichar letter = [make characterAtIndex:i];
+NSLog(@"%d: %hu", i, letter);
+}
+-> characterAtIndex has a return type of unichar, which is a typedef for unsigned short.
+-> characterAtIndex value represents the Unicode decimal number for the character.
+
+* Comparing Strings
+
+-> String comparisons is same as the NSNumber comparisons.
+-> String comparison using the comparing pointers with the == operator and always use the isEqualToString method for a more value comparison.
+-> It is also useful hasPrefix and hasSuffix methods for partial comparisons.
+Example:
+NSString *car = @"Porsche Boxster";
+if ([car isEqualToString:@"Porsche Boxster"]) {
+    NSLog(@"That car is a Porsche Boxster");
+}
+if ([car hasPrefix:@"Porsche"]) {
+    NSLog(@"That car is a Porsche of some sort");
+}
+if ([car hasSuffix:@"Carrera"]) {
+    // This won't execute
+    NSLog(@"That car is a Carrera");
+}
+
+-> NSNumber, NSString has a compare: method that can be useful for alphabetically sorting strings:
+Example:
+NSString *otherCar = @"Ferrari";
+NSComparisonResult result = [car compare:otherCar];
+if (result == NSOrderedAscending) {
+    NSLog(@"The letter 'P' comes before 'F'");
+} else if (result == NSOrderedSame) {
+    NSLog(@"We're comparing the same string");
+} else if (result == NSOrderedDescending) {
+    NSLog(@"The letter 'P' comes after 'F'");
+}
+
+* Combining Strings
+
+-> The two methods are a way to concatenate NSString objects.
+-> NSString is an immutable type, so these methods actually return a new string and leave the original arguments unchanged.
+Example:
+ NSString *name = @"Bindu";
+        NSString *place = @"Bangalore";
+        NSString *details = [make stringByAppendingString:place];
+        NSLog(@"%@", details);
+        details = [name stringByAppendingFormat:@"%@", place];
+        NSLog(@"%@", details);
+        
+* Searching Strings
+
+-> NSString is search methods all return an NSRange struct, which defines a location and a length field.
+-> The location is the index of the beginning of the match, and the length is the number of characters in the match.
+-> If no match found, location will contain NSNotFound.
+Example:
+NSString *car = @"Maserati GranCabrio";
+NSRange searchResult = [car rangeOfString:@"Cabrio"];
+if (searchResult.location == NSNotFound) {
+    NSLog(@"Search string was not found");
+} else {
+    NSLog(@"'Cabrio' starts at index %lu and is %lu characters long",
+          searchResult.location,        
+          searchResult.length);         
+}
+
+* Subdiving Strings
+
+-> You can divide an existing  string by specifying the first/last index of the desired substring.
+
